@@ -4,9 +4,12 @@ if [ ! -d data/raw/train ]; then
     wget 'https://www.dropbox.com/s/0u7c59sj5l5codk/ai_challenger_fsauor2018_testa_20180816.zip?dl=1' -O test.zip
     wget 'https://www.dropbox.com/s/dojhfh1vkvzmcph/ai_challenger_fsauor2018_trainingset_20180816.zip?dl=1' -O train.zip
     wget 'https://www.dropbox.com/s/zq0zmwvdwtigdq5/ai_challenger_fsauor2018_validationset_20180816.zip?dl=1' -O val.zip
-    unzip train.zip -d train 
-    unzip test.zip -d test
-    unzip val.zip -d val
+    unzip train.zip
+    unzip test.zip
+    unzip val.zip
+    mv ai_challenger_sentiment_analysis_trainingset_20180816 train
+    mv ai_challenger_sentiment_analysis_testa_20180816 test
+    mv ai_challenger_sentiment_analysis_validationset_20180816 val
     cd ../..
     python helper/data_group.py
     python helper/preprocess_data.py
