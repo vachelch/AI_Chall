@@ -10,7 +10,7 @@ class TCNNConfig(object):
     num_classes = 4  # 类别数
     num_filters = 256  # 卷积核数目
     kernel_size = 5  # 卷积核尺寸
-    vocab_size = 4000  # 词汇表达小
+    vocab_size = 5000  # 词汇表达小
 
     hidden_dim = 1024  # 全连接层神经元
 
