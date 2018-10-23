@@ -1,5 +1,5 @@
 # AI_Chall
-# requirements: tensorflow, python3, sklearn, numpy, pandas
+requirements: tensorflow, python3, sklearn, numpy, pandas.  
 
-# run by:
+run by:  
 bash run.sh
