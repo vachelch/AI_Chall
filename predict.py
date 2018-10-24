@@ -23,9 +23,9 @@ gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.2)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
 base_dir = 'data/new/'
-val_dir = os.path.join(base_dir, 'test_data.txt')
+val_dir = os.path.join(base_dir, 'test_split_search.txt')
 label_dir = os.path.join(base_dir, 'val_' + sys.argv[1] +'.txt')
-vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
+vocab_dir = os.path.join(base_dir, 'cnews.'  + sys.argv[1] + '.txt')
 
 
 pred_dir = 'data/pred/'
@@ -33,7 +33,6 @@ pred_path = os.path.join(pred_dir, 'preds_' + sys.argv[1] + '.npy')
 
 save_dir = 'checkpoints/textcnn'
 save_path = os.path.join(save_dir, 'best_validation_' + sys.argv[1])  # 最佳验证结果保存路径
-
 
 
 def test():
