@@ -23,9 +23,9 @@ gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.2)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
 base_dir = 'data/new/'
-val_dir = os.path.join(base_dir, 'val_data.txt')
+val_dir = os.path.join(base_dir, 'val_split_search.txt')
 label_dir = os.path.join(base_dir, 'val_' + sys.argv[1] +'.txt')
-vocab_dir = os.path.join(base_dir, 'cnews.vocab.txt')
+vocab_dir = os.path.join(base_dir, 'cnews.vocab_' + sys.argv[1] +'.txt')
 
 
 pred_dir = 'data/pred/'
