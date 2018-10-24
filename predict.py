@@ -63,28 +63,6 @@ def test():
 
     np.save(pred_path, y_pred_cls)
 
-    # #y
-    # data_df = pd.read_csv('data/raw/val/sentiment_analysis_validationset.csv', header=0, encoding='utf8')
-    # y_test = list(data_df[sys.argv[1]])
-    # y_test_cls = [cat_to_id[str(y)] for y in y_test]
-
-    # # 评估
-    # print(sys.argv[1])
-    # print("Precision, Recall and F1-Score...")
-    # report = metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories)
-    # print(report)
-
-
-    # # 混淆矩阵
-    # print("Confusion Matrix...")
-    # cm = metrics.confusion_matrix(y_test_cls, y_pred_cls)
-    # print(cm)
-
-    # with open('log.txt', 'a') as f:
-    #     f.write("%s\n"%sys.argv[1])
-    #     f.write("%s\n"%report)
-    #     f.write("%s\n"%cm)
-    #     f.write("---------------------\n")
 
 
 if __name__ == '__main__':
