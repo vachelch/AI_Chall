@@ -23,12 +23,12 @@ def read_label(train_label_dir):
 
 	return labels
 
-def word2cnt_func(data, labels = None, label):
+def word2cnt_func(data, labels = None, label = None):
 	word2cnt = Counter()
 
 	if labels:
 		for i, row in enumerate(data):
-			if labels[i] != -2:
+			if labels[i] == label:
 				for word in row:
 					word2cnt[word] += 1
 	else:
@@ -75,14 +75,14 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 
 	word2cnt = word2cnt_func(data)
 
-	word2cnt_cls = []
+	word2cnt_clses = []
 	clses = [1, 0, -1, -2]
 	for label in clses:
-		word2cnt_cls.append(word2cnt_func(data, labels, label))
+		word2cnt_clses.append(word2cnt_func(data, labels, label))
 
 	seed_words_clses = []
-	for laebl in clses:
-		tf_idf = get_tf_idf_word(word2cnt, word2cnt_cls[i])
+	for word2cnt_cls in word2cnt_clses:
+		tf_idf = get_tf_idf_word(word2cnt, word2cnt_cls)
 		seed_words_cls, _ = list(zip(*(tf_idf.most_common())))
 		seed_words_clses.append(seed_words_cls)
 
@@ -93,20 +93,6 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 			if len(words) == vocab_size:
 				return list(words)
 
-
-
-
-
-
-
-
-
-# from collections import Counter
-# import numpy as np 
-# c = Counter(list("asadfgfkndcnsdjnc"))
-
-# print(c.most_common())
-# print(np.array(c.most_common())[:, 0])
 
 
 
