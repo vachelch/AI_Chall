@@ -89,10 +89,7 @@ def build_vocab(train_dir, label_dir, vocab_dir, vocab_size=5000):
     # counter = Counter(all_data)
     # count_pairs = counter.most_common(vocab_size - 1)
 
-    tf_idf = top_words(train_dir, label_dir)
-    count_pairs = tf_idf.most_common(vocab_size - 1)
-    words, _ = list(zip(*count_pairs))
-    # 添加一个 <PAD> 来将所有文本pad为同一长度
+    words = top_words(train_dir, label_dir, vocab_size-1)
     words = ['<PAD>'] + list(words)
     open_file(vocab_dir, mode='w').write('\n'.join(words) + '\n')
 

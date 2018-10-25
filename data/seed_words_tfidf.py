@@ -1,9 +1,9 @@
 from collections import Counter
 import os, math
+import numpy as np 
 
 # base_dir = 'data/new'
 # train_split_dir = os.path.join(base_dir, 'train_split_search.txt')
-# train_label_dir = os.path.join(base_dir, "train_location_traffic_convenience.txt")
 
 
 def read_data(train_split_dir):
@@ -23,7 +23,7 @@ def read_label(train_label_dir):
 
 	return labels
 
-def word2cnt_func(data, labels = None):
+def word2cnt_func(data, labels = None, label):
 	word2cnt = Counter()
 
 	if labels:
@@ -69,15 +69,29 @@ def get_tf_idf_doc(word2cnt, word2cnt_cls, data, labels):
 
 	return tf_idf
 
-def top_words(train_split_dir, train_label_dir):
+def top_words(train_split_dir, train_label_dir, vocab_size):
 	data = read_data(train_split_dir)
 	labels = read_label(train_label_dir)
 
 	word2cnt = word2cnt_func(data)
-	word2cnt_cls = word2cnt_func(data, labels)
-	tf_idf = get_tf_idf_word(word2cnt, word2cnt_cls)
 
-	return tf_idf
+	word2cnt_cls = []
+	clses = [1, 0, -1, -2]
+	for label in clses:
+		word2cnt_cls.append(word2cnt_func(data, labels, label))
+
+	seed_words_clses = []
+	for laebl in clses:
+		tf_idf = get_tf_idf_word(word2cnt, word2cnt_cls[i])
+		seed_words_cls, _ = list(zip(*(tf_idf.most_common())))
+		seed_words_clses.append(seed_words_cls)
+
+	words = set()
+	for word_arr in zip(seed_words_clses[0], seed_words_clses[1], seed_words_clses[2], seed_words_clses[3]):
+		for word in word_arr:
+			words.add(word)
+			if len(words) == vocab_size:
+				return list(words)
 
 
 
@@ -87,7 +101,12 @@ def top_words(train_split_dir, train_label_dir):
 
 
 
+# from collections import Counter
+# import numpy as np 
+# c = Counter(list("asadfgfkndcnsdjnc"))
 
+# print(c.most_common())
+# print(np.array(c.most_common())[:, 0])
 
 
 
