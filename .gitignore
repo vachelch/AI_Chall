@@ -1,0 +1,10 @@
+*pycache*
+assets*
+dataset/extra_files*
+*.pyc
+.vscode*
+sftp-config.json
+checkpoints/*
+tensorboard/*
+val_analyse/*
+data/*

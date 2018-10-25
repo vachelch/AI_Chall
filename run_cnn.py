@@ -15,9 +15,14 @@ from sklearn import metrics
 from cnn_model import TCNNConfig, TextCNN
 from data.cnews_loader import read_vocab, read_category, batch_iter, process_file, build_vocab
 
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
-gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
-sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+
+# gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
+
+tfconfig = tf.ConfigProto()
+tfconfig.gpu_options.allow_growth = True
+sess = tf.Session(config=tfconfig)
 
 base_dir = 'data/new/'
 # train_dir = os.path.join(base_dir, 'train_data.txt')

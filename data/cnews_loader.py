@@ -110,9 +110,7 @@ def read_vocab(vocab_dir):
 def read_category():
     """读取分类目录，固定"""
     categories = ['1', '0', '-1', '-2']
-
     categories = [native_content(x) for x in categories]
-
     cat_to_id = dict(zip(categories, range(len(categories))))
 
     return categories, cat_to_id
@@ -140,7 +138,6 @@ def process_file(filename, labelname, word_to_id, cat_to_id, max_length=600):
     data_id, label_id = [], []
     for i in range(len(contents)):
         data_id.append([word_to_id[x] for x in contents[i] if x in word_to_id])
-
         label_id.append(cat_to_id[labels[i]])
 
     # 使用keras提供的pad_sequences来将文本pad为固定长度
@@ -159,17 +156,8 @@ def batch_iter(x, y, batch_size=64):
     x_shuffle = x[indices]
     y_shuffle = y[indices]
 
-
     for i in range(num_batch):
         start_id = i * batch_size
         end_id = min((i + 1) * batch_size, data_len)
         yield x_shuffle[start_id:end_id], y_shuffle[start_id:end_id]
-
-
-
-
-
-
-
-
 

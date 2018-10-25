@@ -20,18 +20,12 @@ def jiaba_split(data):
 
 	return data_split
 
-def write_file(data, file_path):
-	with open(file_path, 'w', encoding = 'utf8') as f:
-		for row in data:
-			f.write(row + '\n')
-
 base_dir = 'data/new/'
 
 start = time.time()
 train_split_dir = os.path.join(base_dir, 'train_split_search.txt')
 test_split_dir = os.path.join(base_dir, 'test_split_search.txt')
 val_split_dir = os.path.join(base_dir, 'val_split_search.txt')
-
 
 train_data, _, _ = read_file(train_dir)
 test_data, _, _ = read_file(test_dir)
@@ -41,22 +35,9 @@ train_split = jiaba_split(train_data)
 test_split = jiaba_split(test_data)
 val_split = jiaba_split(val_data)
 
-
 write_file(train_split, train_split_dir)
 write_file(test_split, test_split_dir)
 write_file(val_split, val_split_dir)
 
 print(time.time() - start)
-# res = jieba.cut_for_search(test)
-# print(" ".join(res))
-
-
-
-
-
-
-
-
-
-
 
