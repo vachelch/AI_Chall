@@ -73,10 +73,15 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 	data = read_data(train_split_dir)
 	labels = read_label(train_label_dir)
 
+	top_labels = Counter(labels)
+	top_labels, _ = zip(*(top_labels.most_common()[-3:]))
+
 	word2cnt = word2cnt_func(data)
 
 	word2cnt_clses = []
-	clses = [1, 0, -1, -2]
+	clses = top_labels
+	print("choose dictionary from 3 class which have least number data:": clses)
+
 	for label in clses:
 		word2cnt_clses.append(word2cnt_func(data, labels, label))
 
@@ -87,7 +92,7 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 		seed_words_clses.append(seed_words_cls)
 
 	words = set()
-	for word_arr in zip(seed_words_clses[0], seed_words_clses[1], seed_words_clses[2], seed_words_clses[3]):
+	for word_arr in zip(seed_words_clses[0], seed_words_clses[1], seed_words_clses[2]):
 		for word in word_arr:
 			words.add(word)
 			if len(words) == vocab_size:
