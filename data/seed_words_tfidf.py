@@ -124,5 +124,3 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 
 
 
-
-

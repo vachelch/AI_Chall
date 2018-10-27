@@ -7,6 +7,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.contrib.keras as kr
 from data.seed_words_tfidf import top_words
+from data.upsampling import up_sample
 
 if sys.version_info[0] > 2:
     is_py3 = True
@@ -58,7 +59,7 @@ def read_file(filename):
 
     return contents
 
-def read_data(filename, labelname):
+def read_data(filename, labelname, train):
     contents = read_file(filename)
     labels = []
 
@@ -72,7 +73,8 @@ def read_data(filename, labelname):
                     labels.append('-2')
             except:
                 pass
-
+    if train:
+        contents, labels = up_sample(contents, labels)
     print(len(contents), len(labels))
 
     return contents, labels
@@ -120,9 +122,9 @@ def to_words(content, words):
     return ''.join(words[x] for x in content)
 
 
-def process_file(filename, labelname, word_to_id, cat_to_id, max_length=600):
+def process_file(filename, labelname, word_to_id, cat_to_id, max_length=600, train = False):
     """将文件转换为id表示"""
-    contents, labels = read_data(filename, labelname)
+    contents, labels = read_data(filename, labelname, train)
     categories, cat_to_id = read_category()
 
     """ obtain weight loss """
@@ -153,6 +155,7 @@ def batch_iter(x, y, batch_size=64):
     num_batch = int((data_len - 1) / batch_size) + 1
 
     indices = np.random.permutation(np.arange(data_len))
+
     x_shuffle = x[indices]
     y_shuffle = y[indices]
 
