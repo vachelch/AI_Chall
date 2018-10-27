@@ -28,7 +28,9 @@ train_dir = os.path.join(base_dir, 'train_split_search.txt')
 test_dir = os.path.join(base_dir, 'val_split_search.txt')
 val_dir = os.path.join(base_dir, 'val_split_search.txt')
 # vocab_dir = os.path.join(base_dir, 'cnews.vocab_search.txt')
-vocab_dir = os.path.join(base_dir, 'cnews.vocab_' + sys.argv[2] +'.txt')
+vocab_dir_step1 = os.path.join(base_dir, 'cnews.vocab_step1' + sys.argv[2] +'.txt')
+vocab_dir_step2 = os.path.join(base_dir, 'cnews.vocab_step2' + sys.argv[2] +'.txt')
+
 train_label_dir = os.path.join(base_dir, 'train_' + sys.argv[2] +'.txt')
 val_label_dir = os.path.join(base_dir, 'val_' + sys.argv[2] + '.txt')
 test_label_dir = val_label_dir
