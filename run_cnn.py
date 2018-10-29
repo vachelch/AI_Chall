@@ -28,8 +28,7 @@ train_dir = os.path.join(base_dir, 'train_split_search.txt')
 test_dir = os.path.join(base_dir, 'val_split_search.txt')
 val_dir = os.path.join(base_dir, 'val_split_search.txt')
 # vocab_dir = os.path.join(base_dir, 'cnews.vocab_search.txt')
-vocab_dir_step1 = os.path.join(base_dir, 'cnews.vocab_step1' + sys.argv[2] +'.txt')
-vocab_dir_step2 = os.path.join(base_dir, 'cnews.vocab_step2' + sys.argv[2] +'.txt')
+vocab_dir = os.path.join(base_dir, 'cnews.vocab_' + sys.argv[2] +'.txt')
 
 train_label_dir = os.path.join(base_dir, 'train_' + sys.argv[2] +'.txt')
 val_label_dir = os.path.join(base_dir, 'val_' + sys.argv[2] + '.txt')
@@ -39,6 +38,8 @@ save_dir = 'checkpoints/textcnn'
 save_path_1 = os.path.join(save_dir, 'best_validation_step1_' + sys.argv[2])  # 最佳验证结果保存路径
 save_path_2 = os.path.join(save_dir, 'best_validation_step2_' + sys.argv[2]) 
 
+pred_dir = 'data/pred/'
+pred_path = os.path.join(pred_dir, 'preds_val_' + sys.argv[2] + '.npy')
 
 def get_time_dif(start_time):
     """获取已使用时间"""
@@ -195,7 +196,8 @@ def test(x_test, y_test, save_path_1, save_path_2, most_cls, index2id, model1, m
         y_pred_cls_step2[start_id:end_id] = session2.run(model2.y_pred_cls, feed_dict=feed_dict2)
 
     y_pred_cls = [most_cls if y_pred_cls_step1[i] == 0 else index2id[y_pred_cls_step2[i]] for i in range(len(y_pred_cls_step1))]
-
+    np.save(pred_path, y_pred_cls)
+    
     # 评估
     print("Precision, Recall and F1-Score...")
     report = metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories)
