@@ -22,23 +22,31 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.2)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
-base_dir = 'data/new/'
-val_dir = os.path.join(base_dir, 'test_split_search.txt')
-label_dir = os.path.join(base_dir, 'val_' + sys.argv[1] +'.txt')
-vocab_dir = os.path.join(base_dir, 'cnews.'  + sys.argv[1] + '.txt')
-
-
-pred_dir = 'data/pred/'
-pred_path = os.path.join(pred_dir, 'preds_' + sys.argv[1] + '.npy')
-
 save_dir = 'checkpoints/textcnn'
-save_path = os.path.join(save_dir, 'best_validation_' + sys.argv[1])  # 最佳验证结果保存路径
+save_path = os.path.join(save_dir, 'best_validation_' + sys.argv[2])  # 最佳验证结果保存路径
+
+base_dir = 'data/new/'
+pred_dir = 'data/pred/'
+
+vocab_dir = os.path.join(base_dir, 'cnews.vocab_' + sys.argv[2] +'.txt')
+label_dir = os.path.join(base_dir, 'val_' + sys.argv[2] +'.txt')
+# predict val
+if sys.argv[1] == 'val':
+    test_dir = os.path.join(base_dir, 'val_split_search.txt')
+    pred_path = os.path.join(pred_dir, 'preds_val_' + sys.argv[2] + '.npy')
+    data_dir = 'data/raw/val/sentiment_analysis_validationset.csv'
+
+# predict test
+if sys.argv[1] == 'test':
+    test_dir = os.path.join(base_dir, 'test_split_search.txt')
+    pred_path = os.path.join(pred_dir, 'preds_test_' + sys.argv[2] + '.npy')
+
 
 
 def test():
     print("Loading test data...")
     start_time = time.time()
-    x_test, _, _ = process_file(val_dir, label_dir, word_to_id, cat_to_id, config.seq_length)
+    x_test, _, _ = process_file(test_dir, label_dir, word_to_id, cat_to_id, config.seq_length)
 
 
     session = tf.Session()
@@ -60,8 +68,26 @@ def test():
         }
         y_pred_cls[start_id:end_id] = session.run(model.y_pred_cls, feed_dict=feed_dict)
 
+    if sys.argv[1] == 'val':
+        #y
+        data_df = pd.read_csv(data_dir, header=0, encoding='utf8')
+        y_test = list(data_df[sys.argv[2]])
+        y_test_cls = [cat_to_id[str(y)] for y in y_test]
 
-    np.save(pred_path, y_pred_cls)
+        # 评估
+        print(sys.argv[2])
+        print("Precision, Recall and F1-Score...")
+        report = metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories)
+        print(report)
+
+
+        # 混淆矩阵
+        print("Confusion Matrix...")
+        cm = metrics.confusion_matrix(y_test_cls, y_pred_cls)
+        print(cm)
+
+    if sys.argv[1] == 'test':
+        np.save(pred_path, y_pred_cls)
 
 
 

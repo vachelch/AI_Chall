@@ -1,15 +1,19 @@
 import numpy as np
 import pandas as pd 
-import os
+import os, sys
 import csv
 from sklearn import metrics
 from data.cnews_loader import read_category
 
 label_names = ["location_traffic_convenience", "location_distance_from_business_district", "location_easy_to_find", "service_wait_time", "service_waiters_attitude", "service_parking_convenience", "service_serving_speed", "price_level", "price_cost_effective", "price_discount", "environment_decoration", "environment_noise", "environment_space", "environment_cleaness", "dish_portion", "dish_taste", "dish_look", "dish_recommendation", "others_overall_experience", "others_willing_to_consume_again"]
 base_dir = 'data/pred/'
-# test_raw_dir = 'data/raw/test/sentiment_analysis_testa.csv'
-test_raw_dir = 'data/raw/val/sentiment_analysis_validationset.csv'
-file_type = 'preds_val_'
+
+if sys.argv[1] == "val":
+    test_raw_dir = 'data/raw/val/sentiment_analysis_validationset.csv'
+    file_type = 'preds_val_'
+elif sys.argv[1] == "test":
+    test_raw_dir = 'data/raw/test/sentiment_analysis_testa.csv'
+    file_type = 'preds_test_'
 
 categories, cat_to_id = read_category()   
 
@@ -48,7 +52,7 @@ def write_pred(test_name):
 
     test_data_df.to_csv(test_name, encoding="utf_8_sig", index=False)
 
-def evaluete():
+def evaluate():
     y_preds = ensemble_labels()
     data_df = pd.read_csv(test_raw_dir, header=0, encoding='utf8')
     score = 0
@@ -58,7 +62,7 @@ def evaluete():
         y_test_cls = [cat_to_id[str(y)] for y in y_test]
         y_pred_cls = y_preds[:, i]
 
-        print(label_name)
+        # print(label_name)
         # print("Precision, Recall and F1-Score...")
         # report = metrics.classification_report(y_test_cls, y_pred_cls, target_names=categories)
         # print(report)
@@ -75,12 +79,14 @@ def evaluete():
 
     
 
-
 if __name__ == "__main__":
     test_name = os.path.join(base_dir, 'senti_0.2.csv')
 
-    evaluete()
-    # write_pred(test_name)
+    if sys.argv[1] == 'val':
+        evaluate()
+
+    elif sys.argv[1] == 'test':
+        write_pred(test_name)
 
 
 

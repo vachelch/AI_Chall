@@ -80,6 +80,7 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 
 	word2cnt_clses = []
 	clses = top_labels
+	print("choose dictionary from 3 class which have least number data:": clses)
 
 	for label in clses:
 		word2cnt_clses.append(word2cnt_func(data, labels, label))
@@ -96,6 +97,8 @@ def top_words(train_split_dir, train_label_dir, vocab_size):
 			words.add(word)
 			if len(words) == vocab_size:
 				return list(words)
+
+
 
 
 
